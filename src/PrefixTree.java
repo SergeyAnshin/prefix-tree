@@ -76,6 +76,20 @@ public class PrefixTree {
         }
     }
 
+    public boolean contains(String word) {
+        Node currentNode = this.rootNode;
+        boolean isExistingWord = false;
+        for (int i = 0; i < word.length(); i++) {
+           if (Node.existsNodeWithValue(word.charAt(i), currentNode.getChildNodes())) {
+               currentNode = currentNode.getChildNodes().get(word.charAt(i));
+               if (isLastLetterIndex(word, i)) {
+                   isExistingWord = currentNode.isLastLetter();
+               }
+           }
+        }
+        return isExistingWord;
+    }
+
     private static boolean isLastLetterIndex(String word, int i) {
         return i == word.length() - 1;
     }
