@@ -51,7 +51,7 @@ public class PrefixTree {
         if (word == null ) {
             throw new NullPointerException();
         }
-        
+
         if (!word.isBlank()) {
             Node lastNode = this.rootNode;
             Map<Character, Node> childNodes;
@@ -64,12 +64,19 @@ public class PrefixTree {
                 currentChar = word.charAt(i);
                 if (Node.existsNodeWithValue(currentChar, childNodes)) {
                     lastNode = childNodes.get(currentChar);
+                    if (isLastLetterIndex(word, i)) {
+                        lastNode.setLastLetter(true);
+                    }
                 } else {
-                    Node newNode = new Node(currentChar, i == word.length() - 1, null);
+                    Node newNode = new Node(currentChar, isLastLetterIndex(word, i), null);
                     childNodes.put(currentChar, newNode);
                     lastNode = newNode;
                 }
             }
         }
+    }
+
+    private static boolean isLastLetterIndex(String word, int i) {
+        return i == word.length() - 1;
     }
 }
