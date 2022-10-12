@@ -1,7 +1,11 @@
 import java.util.*;
 
 public class PrefixTree {
-    private final Node node;
+    private final Node rootNode;
+
+    public PrefixTree() {
+        this.rootNode = new Node('.', false, null);
+    }
 
     private static class Node {
         private char letter;
@@ -37,9 +41,35 @@ public class PrefixTree {
         public void setChildNodes(Map<Character, Node> childNodes) {
             this.childNodes = childNodes;
         }
-    }
 
-    public PrefixTree() {
-        this.node = new Node('.', false, null);
+        private static boolean existsNodeWithValue(char currentChar, Map<Character, Node> childNodes) {
+            return childNodes.containsKey(currentChar);
+        }
+    }
+    
+    public void add(String word) throws NullPointerException {
+        if (word == null ) {
+            throw new NullPointerException();
+        }
+        
+        if (!word.isBlank()) {
+            Node lastNode = this.rootNode;
+            Map<Character, Node> childNodes;
+            char currentChar;
+            for (int i = 0; i < word.length(); i++) {
+                if (lastNode.getChildNodes() == null) {
+                    lastNode.setChildNodes(new HashMap<>());
+                }
+                childNodes = lastNode.getChildNodes();
+                currentChar = word.charAt(i);
+                if (Node.existsNodeWithValue(currentChar, childNodes)) {
+                    lastNode = childNodes.get(currentChar);
+                } else {
+                    Node newNode = new Node(currentChar, i == word.length() - 1, null);
+                    childNodes.put(currentChar, newNode);
+                    lastNode = newNode;
+                }
+            }
+        }
     }
 }
