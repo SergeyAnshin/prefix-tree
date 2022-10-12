@@ -43,7 +43,7 @@ public class PrefixTree {
         }
 
         private static boolean existsNodeWithValue(char currentChar, Map<Character, Node> childNodes) {
-            return childNodes.containsKey(currentChar);
+            return childNodes != null && childNodes.containsKey(currentChar);
         }
     }
     
