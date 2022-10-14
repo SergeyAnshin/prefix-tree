@@ -117,7 +117,7 @@ public class PrefixTree {
         return words;
     }
 
-    public Node getLastNode(String word) throws NoSuchElementException {
+    private Node getLastNode(String word) {
         Node currentNode = this.rootNode;
         for (int i = 0; i < word.length(); i++) {
             if (Node.existsNodeWithValue(word.charAt(i), currentNode.getChildNodes())) {
