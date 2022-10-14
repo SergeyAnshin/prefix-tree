@@ -90,6 +90,46 @@ public class PrefixTree {
         return isExistingWord;
     }
 
+    public Set<String> findAllByPrefix(String prefix) throws NullPointerException {
+        if (prefix == null || prefix.isBlank()) {
+            return Collections.emptySet();
+        }
+
+        Node lastNode = getLastNode(prefix);
+        if (lastNode == null) {
+            return Collections.emptySet();
+        }
+
+        return getWords(new HashSet<>(), new StringBuilder().append(prefix), lastNode);
+    }
+
+    private Set<String> getWords(HashSet<String> words, StringBuilder stringBuilder, Node lastNode) {
+        if (lastNode.isLastLetter()) {
+            words.add(stringBuilder.toString());
+        }
+        if (lastNode.getChildNodes() != null) {
+            for (Node node : lastNode.getChildNodes().values()) {
+                stringBuilder.append(node.getLetter());
+                getWords(words, stringBuilder, node);
+                stringBuilder.delete(stringBuilder.length()-1, stringBuilder.length());
+            }
+        }
+        return words;
+    }
+
+    public Node getLastNode(String word) throws NoSuchElementException {
+        Node currentNode = this.rootNode;
+        for (int i = 0; i < word.length(); i++) {
+            if (Node.existsNodeWithValue(word.charAt(i), currentNode.getChildNodes())) {
+                currentNode = currentNode.getChildNodes().get(word.charAt(i));
+            } else {
+                currentNode = null;
+                break;
+            }
+        }
+        return currentNode;
+    }
+
     private static boolean isLastLetterIndex(String word, int i) {
         return i == word.length() - 1;
     }
